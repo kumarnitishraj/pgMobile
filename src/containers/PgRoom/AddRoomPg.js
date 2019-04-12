@@ -2,19 +2,25 @@ import React, { Component } from 'react'
 import { KeyboardAvoidingView, LayoutAnimation, Platform, StyleSheet, UIManager } from 'react-native';
 import { Image, View } from 'react-native-animatable';
 import PropTypes from 'prop-types';
-
 import IMAGES from '../../images'
 import metrics from '../../config/metrics'
-
-import Opening from './Opening'
-import SignupForm from './SignupForm'
-import LoginForm from './LoginForm'
-
+import AddPgRoomForm from '../../components/PgRoomForm';
+import navigationOpt from '../../navigations/navigationOptions';
 const IMAGE_WIDTH = metrics.DEVICE_WIDTH * 0.8
 
 if (Platform.OS === 'android') UIManager.setLayoutAnimationEnabledExperimental(true)
 
-class AuthScreen extends Component {
+
+class AddRoomPg extends Component {
+
+  static navigationOptions = ({ navigation }) => {
+    let option = {
+        headerTitle: "Home",
+    }
+    console.log(navigationOpt(navigation, option));
+    return navigationOpt(navigation, option);
+}
+
   static propTypes = {
     isLoggedIn: PropTypes.bool,
     isLoading: PropTypes.bool,
@@ -22,11 +28,6 @@ class AuthScreen extends Component {
     login: PropTypes.func.isRequired,
     onLoginAnimationCompleted: PropTypes.func.isRequired // Called at the end of a succesfull login/signup animation
   }
-
-  state = {
-    visibleForm: null // Can be: null | SIGNUP | LOGIN
-  }
-
   componentWillUpdate (nextProps) {
     // If the user has logged/signed up succesfully start the hide animation
     if (!this.props.isLoggedIn && nextProps.isLoggedIn) {
@@ -56,9 +57,7 @@ class AuthScreen extends Component {
 
   render () {
     const { isLoggedIn, isLoading, signup, login } = this.props
-    const { visibleForm } = this.state
-    // The following style is responsible of the "bounce-up from bottom" animation of the form
-    const formStyle = (!visibleForm) ? { height: 0 } : { marginTop: 40 }
+  
     return (
       <View style={styles.container}>
         <Image
@@ -67,41 +66,29 @@ class AuthScreen extends Component {
           delay={200}
           ref={(ref) => this.logoImgRef = ref}
           style={styles.logoImg}
-          source={IMAGES.LOGO}
+          source={IMAGES.HOME}
         />
-        {(!visibleForm && !isLoggedIn) && (
-          <Opening
-            onCreateAccountPress={() => this._setVisibleForm('SIGNUP')}
-            onSignInPress={() => this._setVisibleForm('LOGIN')}
-          />
-        )}
+       
         <KeyboardAvoidingView
-          keyboardVerticalOffset={-100}
+          keyboardVerticalOffset={10}
           behavior={'padding'}
-          style={[formStyle, styles.bottom]}
+          style={[ styles.bottom]}
         >
-          {(visibleForm === 'SIGNUP') && (
-            <SignupForm
+          
+            <AddPgRoomForm
               ref={(ref) => this.formRef = ref}
               onLoginLinkPress={() => this._setVisibleForm('LOGIN')}
               onSignupPress={signup}
               isLoading={isLoading}
             />
-          )}
-          {(visibleForm === 'LOGIN') && (
-            <LoginForm
-              ref={(ref) => this.formRef = ref}
-              onSignupLinkPress={() => this._setVisibleForm('SIGNUP')}
-              onLoginPress={login}
-              isLoading={isLoading}
-            />
-          )}
+          
         </KeyboardAvoidingView>
       </View>
     )
   }
 }
-AuthScreen.defaultProps ={
+
+AddRoomPg.defaultProps ={
   isLoggedIn: false,
   isLoading: false,
   signup: ()=>null,
@@ -109,7 +96,8 @@ AuthScreen.defaultProps ={
   onLoginAnimationCompleted: ()=>null
 }
 
-export default AuthScreen;
+export default AddRoomPg;
+
 
 const styles = StyleSheet.create({
   container: {

@@ -1,43 +1,64 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image,Text } from 'react-native'
+import { StyleSheet, View, Image,Text, TouchableOpacity } from 'react-native'
 import PropTypes from 'prop-types';
-import CustomButton from '../../components/CustomButton'
+import CustomButton from '../../components/CustomButton';
+import IMAGES from '../../images';
 
 /**
  * Just a centered logout button.
  */
-export default class HomeScreen extends Component {
-
+class PgCard extends Component {
+  static propTypes = {
+    onPressCard: PropTypes.func.isRequired,
+    onPressButton: PropTypes.func.isRequired,
+    headingText: PropTypes.string.isRequired,
+    addressText: PropTypes.string.isRequired
+  }
   render () {
+    const { onPressCard, onPressButton, headingText, addressText, index, data } = this.props;
     return (
-      
+      <TouchableOpacity
+        onPress={onPressCard}
+        key={`cardOne${index}`}
+      >
         <View style={styles.card}>
           <View style={{flex:4}}>
             <Image
               style={styles.image}
-              source={require('../../images/logo.png') }
+              source={IMAGES.HOME}
             />
           </View>
 
           <View style={styles.detailView}>
             <View style={styles.headingView}>
-              <Text style={styles.headingText}>Namesdhfkjsdh kjfsdhf ksdjhf</Text>
+              <Text style={styles.headingText}>{headingText}</Text>
               <CustomButton 
                 buttonStyle={styles.btn}
                 text={'Guiest'}
+                onPress={onPressButton}
               />
             </View>
             <View style={styles.descriotionView}>
-              <Text style={styles.descriotionText}>Descriotion skjdhfkjsdhfk  k kjsdfkdsfkh</Text>
+              <Text style={styles.descriotionText}>{addressText}</Text>
             </View>
           
             
             
           </View>
         </View>
+    </TouchableOpacity>
     )
   }
 }
+
+PgCard.defaultProps = {
+  onPressButton: () => null,
+  onPressCard: () => null,
+  headingText: 'Nandeshawara PG',
+  addressText: '14904 Roxton Ave, Gardena, CA, 90249'
+}
+
+export default PgCard;
 
 const styles = StyleSheet.create({
   
@@ -59,7 +80,7 @@ const styles = StyleSheet.create({
     flexDirection:'column'
   },
   headingView:{
-    flex:0.5, 
+    flex:0.4, 
     flexDirection:'row', 
     alignItems:'center'
   },
@@ -81,6 +102,6 @@ const styles = StyleSheet.create({
   },
   descriotionText:{
     fontSize:15, 
-    marginRight:2
+    marginLeft:10
   }
 })

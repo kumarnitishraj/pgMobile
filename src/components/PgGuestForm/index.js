@@ -3,22 +3,27 @@ import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native'
 import { Text, View } from 'react-native-animatable'
 
-import CustomButton from '../../components/CustomButton'
-import CustomTextInput from '../../components/CustomTextInput'
+import CustomButton from '../CustomButton'
+import CustomTextInput from '../CustomTextInput'
 import metrics from '../../config/metrics'
 
 export default class SignupForm extends Component {
   static propTypes = {
     isLoading: PropTypes.bool.isRequired,
     onSignupPress: PropTypes.func.isRequired,
-    onLoginLinkPress: PropTypes.func.isRequired
   }
 
-  state = {
-    email: '',
-    password: '',
-    fullName: ''
+  constructor(props){
+    super(props);
+    this.state = {
+      adharNumber: '',
+      panNumber: '',
+      fullName: '',
+      address:''
+    }
   }
+
+  
 
   hideForm = async () => {
     if (this.buttonRef && this.formRef && this.linkRef) {
@@ -32,47 +37,52 @@ export default class SignupForm extends Component {
 
   render () {
     const { email, password, fullName } = this.state
-    const { isLoading, onLoginLinkPress, onSignupPress } = this.props
+    const { isLoading, onSignupPress } = this.props
     const isValid = email !== '' && password !== '' && fullName !== ''
     return (
       <View style={styles.container}>
-        <View style={styles.form} ref={(ref) => this.formRef = ref}>
+        <View style={styles.form} ref={(ref) => this.formRef = ref} animation={'bounceIn'} duration={600} delay={400}>
           <CustomTextInput
+            ref={(ref) => this.formName = ref}
             placeholder={'Full name'}
             editable={!isLoading}
             returnKeyType={'next'}
-            blurOnSubmit={false}
+            blurOnSubmit={true}
             withRef={true}
-            onSubmitEditing={() => this.emailInputRef.focus()}
+            onSubmitEditing={() => this.formAdhar.focus()}
             onChangeText={(value) => this.setState({ fullName: value })}
             isEnabled={!isLoading}
           />
           <CustomTextInput
+            ref={(ref) => this.formAdhar = ref}
             placeholder={'Adhar Number'}
             editable={!isLoading}
             returnKeyType={'next'}
             blurOnSubmit={false}
             withRef={true}
-            onSubmitEditing={() => this.passwordInputRef.focus()}
-            onChangeText={(value) => this.setState({ email: value })}
+            onSubmitEditing={() => this.formPan.focus()}
+            onChangeText={(value) => this.setState({ adharNumber: value })}
             isEnabled={!isLoading}
           />
           <CustomTextInput
+            ref={(ref) => this.formPan = ref}
             placeholder={'Pan Number'}
             editable={!isLoading}
             returnKeyType={'next'}
             secureTextEntry={false}
             withRef={true}
-            onChangeText={(value) => this.setState({ password: value })}
+            onSubmitEditing={() => this.formAddress.focus()}
+            onChangeText={(value) => this.setState({ panNumber: value })}
             isEnabled={!isLoading}
           />
           <CustomTextInput
+            ref={(ref) => this.formAddress = ref}
             placeholder={'Address'}
             editable={!isLoading}
             returnKeyType={'done'}
             secureTextEntry={false}
             withRef={true}
-            onChangeText={(value) => this.setState({ password: value })}
+            onChangeText={(value) => this.setState({ address: value })}
             isEnabled={!isLoading}
           />
         </View>
@@ -81,7 +91,7 @@ export default class SignupForm extends Component {
             <CustomButton
               onPress={() => onSignupPress(email, password, fullName)}
               isEnabled={isValid}
-              isLoading={isLoading}
+              isLoading={true}
               buttonStyle={styles.createAccountButton}
               textStyle={styles.createAccountButtonText}
               text={'Add Guest'}

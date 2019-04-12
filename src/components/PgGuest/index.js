@@ -1,18 +1,24 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Image,Text } from 'react-native'
 import PropTypes from 'prop-types';
-import CustomButton from '../../components/CustomButton'
+import TouchableOpacity from '../TouchableView';
 
 /**
  * Just a centered logout button.
  */
-export default class HomeScreen extends Component {
-
+class GuestCard extends Component {
+  static propTypes = {
+    onPress: PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired
+  }
   render () {
+    const { onPressCard } = this.props;
     return (
-      
+      <TouchableOpacity
+        onPress={onPressCard}
+      >
         <View style={styles.card}>
-          <View style={{flex:4}}>
+          <View style={{flex:5, justifyContent:'center'}}>
             <Image
               style={styles.image}
               source={require('../../images/user.png') }
@@ -35,13 +41,22 @@ export default class HomeScreen extends Component {
               <Text style={styles.descriotionTypeText}>Address : </Text>
               <Text style={styles.descriotionText}>lshdfh</Text>
             </View>
-            
-            
           </View>
         </View>
+      </TouchableOpacity>
     )
   }
 }
+GuestCard.defaultProps={
+  onPress: ()=>{},
+  data: {
+    name:'',
+    pan:'',
+    adhar:'',
+    address:''
+  }
+}
+export default GuestCard;
 
 const styles = StyleSheet.create({
   

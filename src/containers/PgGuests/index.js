@@ -1,27 +1,24 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Image,Text,FlatList, Platform } from 'react-native'
 import PropTypes from 'prop-types';
-import Card from '../../components/PgCard';
-import SignupForm from '../PgRoom/AddRoomPg';
+import Card from '../../components/PgGuest';
 import { NavigationActions } from "react-navigation";
 import navigationOpt from '../../navigations/navigationOptions';
-
 /**
  * Just a centered logout button.
  */
 
-export default class HomeScreen extends Component {
+export default class PgGuest extends Component {
+  static propTypes = {
+    logout: PropTypes.func
+  }
 
   static navigationOptions = ({ navigation }) => {
     let option = {
-        headerTitle: "Home",
+        headerTitle: "PG Guest",
         create:'pg'
     }
     return navigationOpt(navigation, option);
-  }
-
-  static propTypes = {
-    logout: PropTypes.func
   }
 
   navigate = (screenName, params) =>{
@@ -37,18 +34,11 @@ export default class HomeScreen extends Component {
       ...data,
       update:true
     }
-    this.navigate('PgDetails',params)
-  }
-
-  onPressButton = (data) =>{
-    let params ={
-      ...data,
-    }
-    this.navigate('PgGuestList',params)
+    this.navigate('GuestDetails',params)
   }
 
   render () {
-      console.log('workong oin osdfkjdshf', this.props)
+    
     return (
       <View style={styles.container}>
       
@@ -57,8 +47,7 @@ export default class HomeScreen extends Component {
           renderItem={({item, index}) => {
             return(
               <Card
-                onPressCard = {()=>this.onPressCard(item)}
-                onPressButton = {()=>this.onPressButton(item)}
+                onPressCard={()=>this.onPressCard(item)}
                 index={`card_${index}`}
                 key={`card_${index}`}
                 data = {item}
@@ -66,7 +55,6 @@ export default class HomeScreen extends Component {
             )
           }}
         />
-        {/* <SignupForm /> */}
       </View>
     )
   }
