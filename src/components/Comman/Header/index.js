@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
@@ -10,23 +10,22 @@ import PropsType  from 'prop-types';
 
 class Header extends React.Component {   
  
-        render() {
-            
-            const { title } = this.props;
-            return (
-              <View style={Platform.OS==='android'?styles.androidContainer:styles.container}>
-                <Text style={styles.headerTitleStyle}>{title}</Text>
-              </View>
-            );
-          }
+    render() {
+        const { headerTitle } = this.props;
+        return (
+            <View style={Platform.OS==='android'?styles.androidContainer:styles.container}>
+                <Text style={styles.headerTitleStyle}>{headerTitle}</Text>
+            </View>
+        );
+    }
 };
 
 Header.propsType={
-    title: PropsType.string.isRequired
+    headerTitle: PropsType.string.isRequired
 }
 
 Header.defaultProps={
-    title:'Home'
+    headerTitle:'Home'
 }
 
 export default Header;

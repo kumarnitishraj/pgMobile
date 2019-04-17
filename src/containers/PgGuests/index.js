@@ -16,7 +16,7 @@ export default class PgGuest extends Component {
   static navigationOptions = ({ navigation }) => {
     let option = {
         headerTitle: "PG Guest",
-        create:'pg'
+        create:'pg-guest'
     }
     return navigationOpt(navigation, option);
   }

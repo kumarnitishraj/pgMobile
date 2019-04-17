@@ -11,12 +11,12 @@ import HeaderRight from '../components/Comman/HeaderRight';
 export default NavigatorOpt = (navigation, option = {}) => {
     
     return {
-        headerTitle: <Header  />,
+        headerTitle: <Header {...option} />,
         // headerLeft: (props) => <WMLeftButton navigation={navigation} {...option} {...props} />,
         headerStyle: styles.headerStyle,
         headerTintColor: '#fff',
         headerTitleStyle: styles.headerTitleStyle,
-        headerRight:<HeaderRight {...option} navigation={navigation}/>,
+        headerRight:!!option['create']?<HeaderRight {...option} navigation={navigation}/>:null,
     }
 
 };

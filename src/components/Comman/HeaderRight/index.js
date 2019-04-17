@@ -7,6 +7,7 @@ import {
 import PropsType  from 'prop-types';
 import IMAGES from '../../../images'
 import Touchable from '../../TouchableView';
+import { NavigationActions } from "react-navigation";
 
 class Header extends React.Component {   
 
@@ -19,7 +20,20 @@ class Header extends React.Component {
     }
 
     onPress = ()=>{
-        console.log(' ON screen Props ', this.props);
+        const { create } = this.props;
+        switch(create){
+            case 'pg-room':
+                this.navigate('PgDetails',{});
+                break;
+
+            case 'pg-guest':
+                this.navigate('GuestDetails',{});
+                break;
+
+            default:
+                this.navigate('PgDetails',{});
+                break;
+        }
     }
 
     render() {

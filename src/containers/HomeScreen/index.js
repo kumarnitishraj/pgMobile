@@ -15,7 +15,7 @@ export default class HomeScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     let option = {
         headerTitle: "Home",
-        create:'pg'
+        create:'pg-room'
     }
     return navigationOpt(navigation, option);
   }

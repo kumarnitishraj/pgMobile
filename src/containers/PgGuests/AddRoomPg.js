@@ -16,8 +16,8 @@ if (Platform.OS === 'android') UIManager.setLayoutAnimationEnabledExperimental(t
 class AddRoomPg extends Component {
   static navigationOptions = ({ navigation }) => {
     let option = {
-        headerTitle: "PG Room",
-        create:'pg'
+        headerTitle: "PG Guest",
+        // create:'pg'
     }
     return navigationOpt(navigation, option);
   }
