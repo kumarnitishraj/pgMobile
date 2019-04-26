@@ -37,6 +37,7 @@ class Header extends React.Component {
     }
 
     render() {
+        console.log('working ')
         return (
             <Touchable style={styles.container} onPress={this.onPress}>
             <Image

@@ -11,8 +11,10 @@ class PgCard extends Component {
   static propTypes = {
     onPressCard: PropTypes.func.isRequired,
     onPressButton: PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired,
     headingText: PropTypes.string.isRequired,
-    addressText: PropTypes.string.isRequired
+    addressText: PropTypes.string.isRequired,
+
   }
   render () {
     const { onPressCard, onPressButton, headingText, addressText, index, data } = this.props;
@@ -31,7 +33,7 @@ class PgCard extends Component {
 
           <View style={styles.detailView}>
             <View style={styles.headingView}>
-              <Text style={styles.headingText}>{headingText}</Text>
+              <Text style={styles.headingText}>{data['pg_name']}</Text>
               <CustomButton 
                 buttonStyle={styles.btn}
                 text={'Guiest'}
@@ -39,11 +41,8 @@ class PgCard extends Component {
               />
             </View>
             <View style={styles.descriotionView}>
-              <Text style={styles.descriotionText}>{addressText}</Text>
+              <Text style={styles.descriotionText}>{data['address']}</Text>
             </View>
-          
-            
-            
           </View>
         </View>
     </TouchableOpacity>
@@ -54,6 +53,7 @@ class PgCard extends Component {
 PgCard.defaultProps = {
   onPressButton: () => null,
   onPressCard: () => null,
+  data:{},
   headingText: 'Nandeshawara PG',
   addressText: '14904 Roxton Ave, Gardena, CA, 90249'
 }

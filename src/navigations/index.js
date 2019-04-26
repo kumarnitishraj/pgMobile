@@ -8,7 +8,11 @@ import Home from '../containers';
 
 const AppNavigator = createStackNavigator({
         Home: {
-            screen: Home
+            screen: Home,
+            navigationOptions: {
+                title: 'Home',
+                header: null //this will hide the header
+              },
         },
         HomeScreen: {
             screen: HomeScreen

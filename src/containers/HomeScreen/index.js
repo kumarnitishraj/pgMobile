@@ -5,19 +5,20 @@ import Card from '../../components/PgCard';
 import SignupForm from '../PgRoom/AddRoomPg';
 import { NavigationActions } from "react-navigation";
 import navigationOpt from '../../navigations/navigationOptions';
+import ConsumerHOC from '../../context/ConsumerHOC'
+import Spinner from 'react-native-loading-spinner-overlay';
 
 /**
  * Just a centered logout button.
  */
-
-export default class HomeScreen extends Component {
-
-  static navigationOptions = ({ navigation }) => {
-    let option = {
+const navitionObject = {
         headerTitle: "Home",
         create:'pg-room'
     }
-    return navigationOpt(navigation, option);
+class HomeScreen extends Component {
+
+  componentDidMount(){
+    this.props.getPgList()
   }
 
   static propTypes = {
@@ -48,12 +49,16 @@ export default class HomeScreen extends Component {
   }
 
   render () {
-      console.log('workong oin osdfkjdshf', this.props)
+    const { loading, pgList } = this.props;
     return (
       <View style={styles.container}>
-      
+        <Spinner
+          visible={loading.apiLoading}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
         <FlatList
-          data={[{key: 'a'}, {key: 'b'},{key: 'c'}, {key: 'd'},{key: 'e'}, {key: 'f'},{key: 'g'}, {key: 'h'}]}
+          data={pgList}
           renderItem={({item, index}) => {
             return(
               <Card
@@ -72,9 +77,14 @@ export default class HomeScreen extends Component {
   }
 }
 
+export default ConsumerHOC(navitionObject)(HomeScreen)
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor:'#d9d9d9'
+  },
+  spinnerTextStyle: {
+    color: '#FFF'
   }
 })

@@ -12,7 +12,7 @@ class GuestCard extends Component {
     data: PropTypes.object.isRequired
   }
   render () {
-    const { onPressCard } = this.props;
+    const { onPressCard, data } = this.props;
     return (
       <TouchableOpacity
         onPress={onPressCard}
@@ -27,19 +27,19 @@ class GuestCard extends Component {
 
           <View style={styles.detailView}>
             <View style={styles.headingView}>
-              <Text style={styles.headingText}>Nitish Kumar</Text>
+              <Text style={styles.headingText}>{data['name']}</Text>
             </View>
             <View style={styles.descriotionView}>
               <Text style={styles.descriotionTypeText}>Adhar : </Text>
-              <Text style={styles.descriotionText}>lshdfh</Text>
+              <Text style={styles.descriotionText}>{data['aadhar']}</Text>
             </View>
             <View style={styles.descriotionView}>
               <Text style={styles.descriotionTypeText}>PAN : </Text>
-              <Text style={styles.descriotionText}>lshdfh</Text>
+              <Text style={styles.descriotionText}>{data['pan']}</Text>
             </View>
             <View style={[styles.descriotionView,{flex:1.5,alignItems:'flex-start'}]}>
               <Text style={styles.descriotionTypeText}>Address : </Text>
-              <Text style={styles.descriotionText}>lshdfh</Text>
+              <Text style={styles.descriotionText}>{data['address']}</Text>
             </View>
           </View>
         </View>
@@ -101,7 +101,8 @@ const styles = StyleSheet.create({
     alignItems:'center'
   },
   descriotionText:{
-    fontSize:15
+    fontSize:15,
+    width:'65%'
   },
   descriotionTypeText:{
     fontSize:17, 

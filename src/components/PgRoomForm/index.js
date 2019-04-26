@@ -7,7 +7,8 @@ import CustomButton from '../CustomButton'
 import CustomTextInput from '../CustomTextInput'
 import metrics from '../../config/metrics'
 
-export default class SignupForm extends Component {
+
+export default class PgForm extends Component {
   static propTypes = {
     isLoading: PropTypes.bool.isRequired,
     onSignupPress: PropTypes.func.isRequired,
@@ -35,8 +36,8 @@ export default class SignupForm extends Component {
 
   render () {
     const { email, password, fullName } = this.state
-    const { isLoading, onSignupPress } = this.props
-    const isValid = email !== '' && password !== '' && fullName !== ''
+    const { isLoading, onSignupPress, data } = this.props;
+    console.log('Data : ',data)
     return (
       <View style={styles.container}>
         <View style={styles.form} ref={(ref) => this.formRef = ref} animation={'bounceIn'} duration={600} delay={400}>
@@ -67,7 +68,7 @@ export default class SignupForm extends Component {
           <View ref={(ref) => this.buttonRef = ref} animation={'bounceIn'} duration={600} delay={400}>
             <CustomButton
               onPress={() => onSignupPress(email, password, fullName)}
-              isEnabled={isValid}
+              // isEnabled={isValid}
               isLoading={isLoading}
               buttonStyle={styles.createAccountButton}
               textStyle={styles.createAccountButtonText}

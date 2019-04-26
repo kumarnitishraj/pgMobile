@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation'
 import AuthScreen from './AuthScreen'
-import HomeScreen from './HomeScreen'
+import ConsumerHOC from '../context/ConsumerHOC'
 
 /**
  * The root component of the application.
@@ -16,26 +16,19 @@ class LoginAnimation extends Component {
   static navigationOptions = {
     header: null,
   };
-  
-  state = {
-    isLoggedIn: false, // Is the user authenticated?
-    isLoading: false, // Is the user loggingIn/signinUp?
-    isAppReady: true // Has the app completed the login animation?
+
+  constructor(props) {
+    super(props)
   }
 
-  // /**
-  //  * Two login function that waits 1000 ms and then authenticates the user succesfully.
-  //  * In your real app they should be replaced with an API call to you backend.
-  //  */
-  _simulateLogin = (username, password) => {
-    this.setState({ isLoading: true })
-    setTimeout(() => this.setState({ isLoggedIn: true, isLoading: false }), 1000)
+  _simulateLogin = (email, password) => {
+    const { login } = this.props;
+    login({ email, password });
   }
 
-  _simulateSignup = (username, password, fullName) => {
-    console.log(username, fullName,  password)
-    this.setState({ isLoading: true })
-    setTimeout(() => this.setState({ isLoggedIn: true, isLoading: false }), 1000)
+  _simulateSignup = (email, password, name) => {
+    const { register } = this.props;
+    register({email, password, name});
   }
 
   navigate = (routeName) => {
@@ -46,24 +39,21 @@ class LoginAnimation extends Component {
     this.props.navigation.dispatch(resetAction);
   }
 
-  componentDidMount(){
-    if(this.state.isAppReady){
+  componentDidMount() {
+    const { auth } = this.props;
+    if (!!auth['logedIn']) {
       this.navigate('HomeScreen');
     }
   }
 
-  // static getDerivedStateFromProps(nextProps, prevState){
-  //   const { isAppReady } = prevState;
-  //   if(isAppReady){
-  //     this.navigate('HomeScreen');
-  //   }
-  //   return null;
-  // }
-
-  componentDidUpdate(){
-    const { isAppReady } = this.state;
-    if(isAppReady){
-      this.navigate('HomeScreen');
+  componentDidUpdate() {
+    const { auth } = this.props;
+    let self = this
+    if (auth['logedIn']) {
+      setTimeout(()=>{
+        self.navigate('HomeScreen');
+      },500)
+      
     }
   }
 
@@ -71,17 +61,18 @@ class LoginAnimation extends Component {
    * Simple routing.
    * If the user is authenticated (isAppReady) show the HomeScreen, otherwise show the AuthScreen
    */
-  render () {
-      return (
-        <AuthScreen
-          login={this._simulateLogin}
-          signup={this._simulateSignup}
-          isLoggedIn={this.state.isLoggedIn}
-          isLoading={this.state.isLoading}
-          onLoginAnimationCompleted={() => this.setState({ isAppReady: true })}
-        />
-      )
-    }
+  render() {
+    const { loading, auth } = this.props;
+    return (
+      <AuthScreen
+        login={this._simulateLogin}
+        signup={this._simulateSignup}
+        isLoggedIn={auth['logedIn']}
+        isLoading={loading['submitButtonLoading']}
+      />
+
+    )
+  }
 }
 
-export default LoginAnimation;
+export default ConsumerHOC()(LoginAnimation);

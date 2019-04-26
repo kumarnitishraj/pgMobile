@@ -6,6 +6,7 @@ import IMAGES from '../../images'
 import metrics from '../../config/metrics'
 import AddPgRoomForm from '../../components/PgRoomForm';
 import navigationOpt from '../../navigations/navigationOptions';
+
 const IMAGE_WIDTH = metrics.DEVICE_WIDTH * 0.8
 
 if (Platform.OS === 'android') UIManager.setLayoutAnimationEnabledExperimental(true)
@@ -56,8 +57,7 @@ class AddRoomPg extends Component {
   }
 
   render () {
-    const { isLoggedIn, isLoading, signup, login } = this.props
-  
+    const { isLoggedIn, isLoading, signup, login, navigation } = this.props;
     return (
       <View style={styles.container}>
         <Image
@@ -80,6 +80,7 @@ class AddRoomPg extends Component {
               onLoginLinkPress={() => this._setVisibleForm('LOGIN')}
               onSignupPress={signup}
               isLoading={isLoading}
+              data={navigation.state.params}
             />
           
         </KeyboardAvoidingView>

@@ -6,6 +6,8 @@ import { Text, View } from 'react-native-animatable'
 import CustomButton from '../../components/CustomButton'
 import CustomTextInput from '../../components/CustomTextInput'
 import metrics from '../../config/metrics'
+import Helpers from '../../helpers'
+import Utils from '../../utils'
 
 export default class SignupForm extends Component {
   static propTypes = {
@@ -30,9 +32,18 @@ export default class SignupForm extends Component {
     }
   }
 
+  onSignupPress = (email, password, fullName) =>{
+    const { onSignupPress } = this.props; 
+    if(Helpers.isEmailValid(email) && !Utils.isStringEmptyOrNull(password) && !Utils.isStringEmptyOrNull(fullName)){
+      onSignupPress(email, password, fullName)
+    }else{
+      alert('wrong data')
+    }
+  }
+
   render () {
     const { email, password, fullName } = this.state
-    const { isLoading, onLoginLinkPress, onSignupPress } = this.props
+    const { isLoading, onLoginLinkPress } = this.props
     const isValid = email !== '' && password !== '' && fullName !== ''
     return (
       <View style={styles.container}>
@@ -74,7 +85,7 @@ export default class SignupForm extends Component {
         <View style={styles.footer}>
           <View ref={(ref) => this.buttonRef = ref} animation={'bounceIn'} duration={600} delay={400}>
             <CustomButton
-              onPress={() => onSignupPress(email, password, fullName)}
+              onPress={() => this.onSignupPress(email, password, fullName)}
               isEnabled={isValid}
               isLoading={isLoading}
               buttonStyle={styles.createAccountButton}

@@ -6,18 +6,19 @@ import PropTypes from 'prop-types';
 import CustomButton from '../../components/CustomButton'
 import CustomTextInput from '../../components/CustomTextInput'
 import metrics from '../../config/metrics'
+import Helpers from '../../helpers'
+import Utils from '../../utils'
 
 export default class LoginForm extends Component {
-  // static propTypes = {
-  //   isLoading: PropTypes.bool.isRequired,
-  //   onLoginPress: PropTypes.func.isRequired,
-  //   onSignupLinkPress: PropTypes.func.isRequired
-  // }
+  
 
-  state = {
-    email: '',
-    password: '',
-    fullName: ''
+  constructor(props){
+    super(props)
+    this.state = {
+      email: 'tapas@ca.com',
+      password: '123',
+      fullName: ''
+    }
   }
 
   hideForm = async () => {
@@ -27,6 +28,15 @@ export default class LoginForm extends Component {
         this.formRef.fadeOut(300),
         this.linkRef.fadeOut(300)
       ])
+    }
+  }
+
+  validateLoginData = ( email, password ) => {
+    const { onLoginPress } = this.props;
+    if(Helpers.isEmailValid(email) && !Utils.isStringEmptyOrNull(password)){
+      onLoginPress(email, password)
+    }else{
+      alert('wrong data')
     }
   }
 
@@ -49,6 +59,7 @@ export default class LoginForm extends Component {
             onSubmitEditing={() => this.passwordInputRef.focus()}
             onChangeText={(value) => this.setState({ email: value })}
             isEnabled={!isLoading}
+            value={email}
           />
           <CustomTextInput
             name={'password'}
@@ -60,12 +71,13 @@ export default class LoginForm extends Component {
             withRef={true}
             onChangeText={(value) => this.setState({ password: value })}
             isEnabled={!isLoading}
+            value={password}
           />
         </View>
         <View style={styles.footer}>
           <View ref={(ref) => this.buttonRef = ref} animation={'bounceIn'} duration={600} delay={400}>
             <CustomButton
-              onPress={() => onLoginPress(email, password)}
+              onPress={() => this.validateLoginData(email, password)}
               isEnabled={isValid}
               isLoading={isLoading}
               buttonStyle={styles.loginButton}

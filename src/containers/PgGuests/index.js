@@ -3,22 +3,25 @@ import { StyleSheet, View, Image,Text,FlatList, Platform } from 'react-native'
 import PropTypes from 'prop-types';
 import Card from '../../components/PgGuest';
 import { NavigationActions } from "react-navigation";
-import navigationOpt from '../../navigations/navigationOptions';
+import ConsumerHOC from '../../context/ConsumerHOC'
+import navigationOptions from '../../navigations/navigationOptions';
+
 /**
  * Just a centered logout button.
  */
-
-export default class PgGuest extends Component {
+const nativationObject = {
+  headerTitle: "PG Guest",
+  create:'pg-guest'
+}
+class PgGuest extends Component {
   static propTypes = {
     logout: PropTypes.func
   }
 
-  static navigationOptions = ({ navigation }) => {
-    let option = {
-        headerTitle: "PG Guest",
-        create:'pg-guest'
-    }
-    return navigationOpt(navigation, option);
+  componentDidMount(){
+    const { getPgGuestList, navigation } = this.props;
+    console.log(navigation.state.params._id);
+    getPgGuestList(navigation.state.params._id) 
   }
 
   navigate = (screenName, params) =>{
@@ -38,12 +41,12 @@ export default class PgGuest extends Component {
   }
 
   render () {
-    
+    const { guestList } = this.props;
     return (
       <View style={styles.container}>
       
         <FlatList
-          data={[{key: 'a'}, {key: 'b'},{key: 'c'}, {key: 'd'},{key: 'e'}, {key: 'f'},{key: 'g'}, {key: 'h'}]}
+          data={guestList}
           renderItem={({item, index}) => {
             return(
               <Card
@@ -60,6 +63,7 @@ export default class PgGuest extends Component {
   }
 }
 
+export default ConsumerHOC(nativationObject)(PgGuest)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
